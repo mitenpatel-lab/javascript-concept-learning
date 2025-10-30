@@ -11,6 +11,13 @@ console.log(fullName());
 
 let numbers=[67,90,23,12,9,56,89];
 
+//use of for loop
+
+for (let i=0;i<=number.length-1;i++){
+    number[i]%2==0?console.log(number[i] +"is even "):console.log(number[i] +"is odd ") 
+}
+
+
 console.log(numbers.length)
 
 numbers.length>6?console.log("array elements are greater than 6")
@@ -60,25 +67,6 @@ setTimeout(() => {
 
 console.log("End");
 
-//////// Array Methods 
 
-let cars=["BMW","Audi","Skoda"];
-cars.push("Mercedes")
-console.log(cars)
-
-cars.pop()
-
-console.log(cars)
-
-
-let number=[56,89,9,78,90];
-console.log(cars.filter(car=>car.length>4));
-console.log(number.find((value) => {
-    return value >50
-}))
-console.log(number.toSorted(function(a, c){return a -c}))
-console.log(number)
-
-console.log(number.map((num=> num *2)))
 
 

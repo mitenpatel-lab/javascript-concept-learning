@@ -1,0 +1,21 @@
+Introduction to JavaScript
+Variables and Data Types
+Operators
+Control Statements (if, else, switch)
+Loops (for, while, do...while, for...of, for...in)
+Arrays
+Objects
+Dates
+Regular Expressions
+JavaScript Errors (try...catch, throw)
+
+
+Functions
+Arrow Functions
+Scope and Closures
+Classes
+Object Destructuring and Spread Operator
+Prototypes and Inheritance
+Asynchronous JavaScript (setTimeout, Promise, async/await)
+AJAX (XMLHttpRequest, Fetch API)
+JSON (Parse and Stringify)
