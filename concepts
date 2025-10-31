@@ -16,6 +16,5 @@ Scope and Closures
 Classes
 Object Destructuring and Spread Operator
 Prototypes and Inheritance
-Asynchronous JavaScript (setTimeout, Promise, async/await)
-AJAX (XMLHttpRequest, Fetch API)
+QAJAX (XMLHttpRequest, Fetch API)
 JSON (Parse and Stringify)
