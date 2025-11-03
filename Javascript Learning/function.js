@@ -6,7 +6,6 @@ console.log(sum(5,9));
 
 console.log("create a function with that can be called with refe variable.")
 
-
 let addition=function(a,b){
     
     return a+b;
