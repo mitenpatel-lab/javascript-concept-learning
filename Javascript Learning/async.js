@@ -1,10 +1,5 @@
     //Async and await
 
-    
-
-   
-    
-
     async function fetchdata(api){
 
         try{
