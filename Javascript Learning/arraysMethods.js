@@ -37,3 +37,5 @@ const user2={first:"miten", last:"Patel"};
 const details= person2.fullname.bind(user2);
 
 console.log(details("ahmedabad"));
+
+
