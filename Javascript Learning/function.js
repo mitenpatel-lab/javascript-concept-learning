@@ -4,8 +4,8 @@ function sum(x,y){
 
 console.log(sum(5,9));
 
-//create a function with that can be called with refe variable.
 
+console.log("conflit")
 
 let addition=function(a,b){
     
