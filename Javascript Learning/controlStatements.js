@@ -6,7 +6,7 @@ let number3=60;
 // simple if-else statement 
 
 if(number>number2){
-    console.log(number +" is greater than" + number2);
+    console.log(number +" is greater  " + number2);
 }else{
         console.log(number +" is less than " + number2);
 

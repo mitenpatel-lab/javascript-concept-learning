@@ -1,11 +1,4 @@
-    //Async and await
-
-    
-
-   
-    
-
-    async function fetchdata(api){
+async function fetchdata(api){
 
         try{
                 const response=await fetch(api);
@@ -19,7 +12,7 @@
 
                     data.forEach((datas)=>{
                       console.log(datas.id + "  "+ datas.title)
-                    })
+                    });
 
         }catch(error){
                 console.error("There was an error:", error);
