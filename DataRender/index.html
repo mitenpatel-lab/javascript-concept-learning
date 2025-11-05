@@ -37,9 +37,13 @@
     </div>
     <div id="main" class="container">
 
-        <table class="table">
+        <div class="container">
+            <button onclick="createPage()" class="btn btn-warning" type="button">Create New Product</button>
+        </div>
+
+        <table class="table text-center align-items-center">
             <thead class="thead-dark">
-                <tr style="text-align: center;">
+                <tr>
                     <th scope="col">Image</th>
                     <th scope="col">Title</th>
                     <th scope="col">Action</th>
@@ -50,13 +54,25 @@
 
             </tbody>
             <script>
+                let currentpage = 0;
+                const itemPerPage = 10;
+                let skip = (itemPerPage) * currentpage;
+
+                window.onload = function () {
+
+                    allProducts(`https://fakestoreapi.com/products?limit=${itemPerPage}?skip=${skip}`);
+
+                };
                 let data;
                 async function allProducts(url) {
+
+                    let currentpage = 0;
+                    const itemPerPage = 10;
+                    let skip = (itemPerPage) * currentpage;
                     let spinner = document.getElementById("loadingOverlay");
                     let dataDiv = document.getElementById("main");
                     spinner.style.visibility = 'visible';
                     dataDiv.style.visibility = 'hidden';
-
                     const response = await fetch(url);
                     try {
                         if (!response) {
@@ -101,7 +117,7 @@
                             const view = document.createElement('button');
 
                             view.type = 'button';
-                            view.className = 'btn btn-primary btn-midum px-5 mt-4';
+                            view.className = 'btn btn-primary btn-medium px-5 mt-4';
                             view.textContent = 'View';
                             view.dataset.id = product.id;
 
@@ -118,6 +134,12 @@
                             edit.type = 'button';
                             edit.className = 'btn btn-success btn-medium px-5 ms-md-3 mt-4';
                             edit.textContent = 'Edit';
+                            edit.addEventListener('click', () => {
+
+                                localStorage.setItem("pid", product.id);
+                                window.location.href = "edit.html";
+                            });
+
                             action.appendChild(edit);
 
                             const deleteProduct = document.createElement('button');
@@ -144,7 +166,9 @@
                     }
                 }
 
-                allProducts('https://fakestoreapi.com/products');
+
+
+
 
                 async function deleteProductt(id, row) {
                     if (!confirm('Are you sure you want to delete this product?')) return;
@@ -166,11 +190,44 @@
                     }
                 }
 
+
+
+                function createPage() {
+                    window.location.href = 'create.html'; // Replace 'page2.html' with the actual path to your destination page
+                }
+
             </script>
 
         </table>
 
+        <nav aria-label="...">
+            <ul class="pagination justify-content-center">
+                <li id="prev" class="page-item" style="margin-right: 40px;">
+                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+
+                <li id="next" class="page-item mx-10">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+
     </div>
+
+    <script>
+        // document.getElementById("prev").addEventListener('click', async () => {
+
+        //     if (currentpage == 0) {
+        //         this.disabled = true;
+        //     }
+
+        //     currentpage = currentpage - 1;
+
+        //     allProducts(`https://fakestoreapi.com/products?limit=${itemPerPage}?skip=${skip}`);
+
+
+        // });
+    </script>
 </body>
 
 </html>

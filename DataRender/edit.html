@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+        }
+
+        label {
+            color: #333;
+        }
+
+        .btn-send {
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            width: 80%;
+            margin-left: 3px;
+        }
+
+        .help-block.with-errors {
+            color: #ff5050;
+            margin-top: 5px;
+
+        }
+
+        .card {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+
+<body>
+    <div id="updated">
+
+
+        <div class="container" id="datacontainer">
+            <div class="row min-vh-70 align-items-center">
+                <div class="col-md-6">
+                    <div class="mx-auto" style="max-width: 400px; max-height: 400px;">
+                        <img src="" id="img" class="img-fluid" alt="Product Image">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold" id="name">Product Name</h5>
+                        <h6 class="text-primary mb-3" id="price">$49.99</h6>
+                        <p class="card-text text-muted" id="desc"></p>
+                        <span class="badge bg-secondary" id="category">Category</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="edit">
+        <div class=" text-center mt-5 ">
+
+            <h1>Edit Product</h1>
+
+
+        </div>
+
+        <div class="row ">
+            <div class="col-lg-7 mx-auto">
+                <div class="card shadow mx-auto p-4 bg-light">
+                    <div class="card-body  bg-light">
+
+                        <div class="container">
+                            <form id="contact-form" role="form" method="put">
+
+                                <div class="controls">
+
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4 h-25">
+                                            <div class="form-group">
+                                                <img src="" id="form_image" style="height:25vh; object-fit:contain;"
+                                                    name="image" class="form-control" required="required">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="form_title">Title </label>
+                                                <input id="form_title" type="text" name="name" class="form-control mt-1"
+                                                    placeholder="Please enter Title" required="required"
+                                                    data-error="Firstname is required." disabled>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="form_category">Select Category</label>
+                                                <select id="form_category" name="need" class="form-control mt-1"
+                                                    required="required" data-error="Please specify your Category."
+                                                    disabled>
+                                                    <option value="" selected disabled>--Select Your Category--</option>
+                                                    <option value="jewelery">jewelery</option>
+                                                    <option value="men's clothing">men's clothing</option>
+                                                    <option value="electronics">electronics</option>
+                                                    <option value="women's clothing">women's clothing</option>
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="form_price">Price</label>
+                                                <input id="form_price" type="number" name="price"
+                                                    class="form-control mt-1" placeholder="Please enter Price"
+                                                    required="required" data-error="Valid email is required." disabled>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="form_desc">Description</label>
+                                                <textarea id="form_desc" name="desc" class="form-control mt-1"
+                                                    placeholder="Write Product Description here." rows="4"
+                                                    required="required" data-error="Please, leave us a message."
+                                                    disabled></textarea>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-md-12 mt-4 text-center">
+
+                                            <input type="" id="editbtn" class="btn btn-primary btn-send  pt-2 btn-block"
+                                                value="Edit">
+
+                                        </div>
+                                        <div class="col-md-12 mt-4 text-center">
+
+                                            <input type="" id="applybtn"
+                                                class="btn btn-success btn-send  pt-2 btn-block" value="Apply ">
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- /.8 -->
+
+            </div>
+            <!-- /.row-->
+
+        </div>
+    </div>
+
+</body>
+
+
+<script>
+    window.onload = function () {
+        allProducts("https://fakestoreapi.com/products/" + pid);
+
+        // Your function call or code here
+    };
+
+    const pid = localStorage.getItem("pid");
+    let btnedit = document.getElementById("editbtn");
+    let btnapply = document.getElementById("applybtn");
+
+    btnapply.style.visibility = 'hidden';
+
+
+    btnedit.addEventListener('click', e => {
+        document.querySelectorAll(':disabled').forEach(el => el.disabled = false);
+        btnapply.style.visibility = 'visible';
+        btnedit.style.visibility = 'hidden';
+
+
+    });
+    btnapply.addEventListener('click', async () => {
+        console.log(document.getElementById("form_title").value);
+
+        const product = {
+            title: document.getElementById("form_title").value,
+            price: parseInt(document.getElementById("form_price").value),
+            description: document.getElementById("form_desc").value,
+            category: document.getElementById("form_category").value
+
+        }
+        await updateProduct("https://fakestoreapi.com/products/" + pid, product);
+
+    });
+
+
+    async function allProducts(url) {
+
+        btnapply.style.visibility = 'hidden';
+        // spinner.style.visibility = 'visible'
+        const response = await fetch(url);
+        try {
+            if (!response) {
+                throw new Error('Unable to fetch data');
+            }
+            data = await response.json();
+            document.getElementById("form_title").value = data.title;
+            document.getElementById("form_price").value = Math.round(data.price);
+            document.getElementById("form_desc").value = data.description;
+            document.getElementById("form_category").value = data.category;
+            document.getElementById("form_image").setAttribute('src', data.image);
+
+            // datavisible.style.visibility = 'visible';
+            // spinner.style.visibility = 'hidden';
+
+
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
+    }
+
+    async function updateProduct(url, product) {
+
+        console.log(product);
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(product)
+        });
+
+        try {
+            if (!response.ok) {
+                throw new Error('Unable to fetch data');
+            }
+            data = await response.json();
+            console.log(data);
+            let updatedom = document.getElementById("updated");
+            let detaildom = document.getElementById("edit");
+            btnapply.style.visibility = 'hidden';
+
+            updatedom.style.visibility = "visible";
+            detaildom.style.visibility = "hidden";
+            document.getElementById("name").textContent = data.title;
+            document.getElementById("price").textContent = "$" + data.price;
+            document.getElementById("desc").textContent = data.description;
+            document.getElementById("category").textContent = "Category: " + data.category;
+            document.getElementById("img").setAttribute('src', data.image);
+
+            // datavisible.style.visibility = 'visible';
+            // spinner.style.visibility = 'hidden';
+
+
+
+        } catch (error) {
+            console.log(error);
+        }
+
+
+    }
+
+
+
+
+</script>
+
+</html>
