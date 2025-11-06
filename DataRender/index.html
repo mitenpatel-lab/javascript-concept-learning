@@ -125,13 +125,16 @@
         let currentPage = 1;
         const itemsPerPage = 4;
         let totalPage = 1;
+
+        let paginationProducts;
+        let spinner = document.getElementById("loadingOverlay");
+        let dataDiv = document.getElementById("main");
+
         allProducts("https://fakestoreapi.com/products");
         async function allProducts(url) {
 
-            const start = (currentPage - 1) * itemsPerPage;
-            const end = start + itemsPerPage;
-            let spinner = document.getElementById("loadingOverlay");
-            let dataDiv = document.getElementById("main");
+
+
             spinner.style.visibility = 'visible';
             dataDiv.style.visibility = 'hidden';
             const response = await fetch(url);
@@ -140,80 +143,87 @@
                     throw new Error('Unable to fetch data');
                 }
                 products = await response.json();
+                loadProducts(products);
 
-                let paginationProducts = products.slice(start, end);
-                console.log(products);
-                const tabledata = document.getElementById("data");
-                totalPage = Math.ceil(products.length / itemsPerPage);
-
-                console.log(totalPage);
-                tabledata.innerHTML = ""
-                paginationProducts.forEach(product => {
-
-                    const row = document.createElement('tr');
-
-                    const img = document.createElement('td');
-                    const src = document.createElement('img');
-                    src.setAttribute('src', product.image);
-                    img.appendChild(src);
-                    row.appendChild(img);
-
-                    const title = document.createElement('td');
-                    title.textContent = product.title;
-                    row.appendChild(title);
-
-                    const action = document.createElement('td');
-
-                    const view = document.createElement('button');
-
-                    view.type = 'button';
-                    view.className = 'btn btn-primary btn-medium px-5 mt-4';
-                    view.textContent = 'View';
-                    view.dataset.id = product.id;
-
-                    view.addEventListener('click', () => {
-
-                        localStorage.setItem("pid", product.id);
-                        window.location.href = "view.html";
-                    })
-                    action.appendChild(view);
-
-
-                    const edit = document.createElement('button');
-
-                    edit.type = 'button';
-                    edit.className = 'btn btn-success btn-medium px-5 ms-md-3 mt-4';
-                    edit.textContent = 'Edit';
-                    edit.addEventListener('click', () => {
-
-                        localStorage.setItem("pid", product.id);
-                        window.location.href = "edit.html";
-                    });
-
-                    action.appendChild(edit);
-
-                    const deleteProduct = document.createElement('button');
-
-                    deleteProduct.type = 'button';
-                    deleteProduct.className = 'btn btn-danger btn-medium px-2 ms-md-3 mt-4';
-                    deleteProduct.textContent = 'Delete';
-                    deleteProduct.dataset.id = product.id;
-
-                    deleteProduct.addEventListener('click', async () => {
-                        await deleteProductt(product.id, row);
-                    });
-                    action.append(deleteProduct);
-                    row.appendChild(action);
-                    tabledata.appendChild(row);
-
-                });
             } catch (error) {
                 console.error(error);
-            } finally {
-                dataDiv.style.visibility = 'visible';
-                spinner.style.visibility = 'hidden';
             }
         }
+
+        function loadProducts() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            paginationProducts = products.slice(start, end);
+            console.log(products);
+            const tabledata = document.getElementById("data");
+            totalPage = Math.ceil(products.length / itemsPerPage);
+
+            console.log(totalPage);
+            tabledata.innerHTML = ""
+            paginationProducts.forEach(product => {
+
+                const row = document.createElement('tr');
+
+                const img = document.createElement('td');
+                const src = document.createElement('img');
+                src.setAttribute('src', product.image);
+                img.appendChild(src);
+                row.appendChild(img);
+
+                const title = document.createElement('td');
+                title.textContent = product.title;
+                row.appendChild(title);
+
+                const action = document.createElement('td');
+
+                const view = document.createElement('button');
+
+                view.type = 'button';
+                view.className = 'btn btn-primary btn-medium px-5 mt-4';
+                view.textContent = 'View';
+                view.dataset.id = product.id;
+
+                view.addEventListener('click', () => {
+
+                    localStorage.setItem("pid", product.id);
+                    window.location.href = "view.html";
+                })
+                action.appendChild(view);
+
+
+                const edit = document.createElement('button');
+
+                edit.type = 'button';
+                edit.className = 'btn btn-success btn-medium px-5 ms-md-3 mt-4';
+                edit.textContent = 'Edit';
+                edit.addEventListener('click', () => {
+
+                    localStorage.setItem("pid", product.id);
+                    window.location.href = "edit.html";
+                });
+
+                action.appendChild(edit);
+
+                const deleteProduct = document.createElement('button');
+
+                deleteProduct.type = 'button';
+                deleteProduct.className = 'btn btn-danger btn-medium px-2 ms-md-3 mt-4';
+                deleteProduct.textContent = 'Delete';
+                deleteProduct.dataset.id = product.id;
+
+                deleteProduct.addEventListener('click', async () => {
+                    await deleteProductt(product.id, row);
+                });
+                action.append(deleteProduct);
+                row.appendChild(action);
+                tabledata.appendChild(row);
+                dataDiv.style.visibility = 'visible';
+                spinner.style.visibility = 'hidden';
+
+            });
+        }
+
+
 
         document.getElementById("applyFilter").addEventListener('click', function () {
 
@@ -233,7 +243,7 @@
             }
 
             currentPage++;
-            allProducts("https://fakestoreapi.com/products");
+            loadProducts();
         });
         document.getElementById("prev").addEventListener('click', () => {
             if (currentPage == 1) {
