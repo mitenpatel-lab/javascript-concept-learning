@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
@@ -37,6 +38,55 @@
     </div>
     <div id="main" class="container">
 
+        <div class="container my-4">
+            <h4>Filter Products</h4>
+            <div class="row g-3 align-items-center">
+                <div class="col-md-4">
+                    <label for="descFilter" class="form-label">Title</label>
+                    <input type="text" id="titleFilter" class="form-control" placeholder="Search Title">
+                </div>
+
+                <!-- <div class="col-md-4">
+                    <label class="form-label">Price Range: <span id="priceValue">0 - 1000</span></label>
+                    <div class="range-slider">
+                        <input type="range" min="0" max="1000" value="0" id="minRange" class="range-input">
+                        <input type="range" min="0" max="1000" value="1000" id="maxRange" class="range-input">
+                    </div>
+                </div> -->
+
+
+                <div class="col-md-4">
+                    <label for="categoryFilter" class="form-label">Category</label>
+                    <select id="categoryFilter" class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="jewelery">Jewelery</option>
+                        <option value="men's clothing">Men's Clothing</option>
+                        <option value="women's clothing">Women's Clothing</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <button class="btn btn-primary" id="applyFilter">Apply Filter</button>
+                <button class="btn btn-secondary" id="resetFilter">Reset Filter</button>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                    </div>
+                    <div class="col">
+                    </div>
+                    <div class="col">
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <div class="container">
             <button onclick="createPage()" class="btn btn-warning" type="button">Create New Product</button>
         </div>
@@ -74,9 +124,8 @@
         let products = [];
         let currentPage = 1;
         const itemsPerPage = 4;
-        let data;
+        let totalPage = 1;
         allProducts("https://fakestoreapi.com/products");
-
         async function allProducts(url) {
 
             const start = (currentPage - 1) * itemsPerPage;
@@ -95,7 +144,9 @@
                 let paginationProducts = products.slice(start, end);
                 console.log(products);
                 const tabledata = document.getElementById("data");
+                totalPage = Math.ceil(products.length / itemsPerPage);
 
+                console.log(totalPage);
                 tabledata.innerHTML = ""
                 paginationProducts.forEach(product => {
 
@@ -155,7 +206,6 @@
                     row.appendChild(action);
                     tabledata.appendChild(row);
 
-
                 });
             } catch (error) {
                 console.error(error);
@@ -165,14 +215,31 @@
             }
         }
 
+        document.getElementById("applyFilter").addEventListener('click', function () {
+
+            let input = $("#titleFilter").val();
+            $("#data tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(input) > -1)
+            });
+
+        });
+
+
 
         document.getElementById("next").addEventListener('click', () => {
+            if (currentPage == totalPage) {
+                this.disabled = true;
+                return;
+            }
 
             currentPage++;
             allProducts("https://fakestoreapi.com/products");
         });
         document.getElementById("prev").addEventListener('click', () => {
-
+            if (currentPage == 1) {
+                this.disabled = true;
+                return;
+            }
             currentPage--;
             allProducts("https://fakestoreapi.com/products");
         });
@@ -203,7 +270,7 @@
 
 
         function createPage() {
-            window.location.href = 'create.html'; // Replace 'page2.html' with the actual path to your destination page
+            window.location.href = 'create.html';
         }
 
 
