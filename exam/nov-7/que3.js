@@ -13,12 +13,16 @@ function numbers(num) {
         }
 
     }
+
     if (count > 0) {
         for (let i = 1; i <= count; i++) {
-            arr[arr.length].push(0);
+            arr.push(0);
+
         }
     }
+
+    return arr;
 }
 
 
-console.log(numbers[5, 6, 9, 7, 0, 8]);
+console.log(numbers([5, 0, 9, 7, 0, 8]));

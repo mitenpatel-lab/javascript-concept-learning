@@ -14,7 +14,7 @@ function pyramid(n) {
             print += l;
         }
 
-        console.log(row);
+        console.log(print);
     }
 }
 
