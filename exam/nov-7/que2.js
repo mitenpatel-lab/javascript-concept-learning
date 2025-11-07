@@ -2,16 +2,15 @@ function getstr(s) {
 
     let str = s.split(" ");
 
-    let sortedarr = str.reverse();
+    let temp = "";
 
-    if (sortedarr[0].length == sortedarr[1]) {
-        return sortedarr[1];
+    str.forEach(element => {
 
-    }
-    else {
-        return sortedarr[0];
-
-    }
+        if (element.length > temp.length) {
+            temp = element;
+        }
+    });
+    return temp;
 }
 
-console.log(getstr("n patel mitenfgf dfghtythth"));
+console.log(getstr("hello jay miten"));
