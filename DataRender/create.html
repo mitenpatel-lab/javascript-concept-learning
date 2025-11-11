@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+        }
+
+        label {
+            color: #333;
+        }
+
+        .btn-send {
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            width: 80%;
+            margin-left: 3px;
+        }
+
+        .help-block.with-errors {
+            color: #ff5050;
+            margin-top: 5px;
+
+        }
+
+        .card {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+
+
+<body>
+
+    <div class="container" id="create">
+        <div class=" text-center mt-5 ">
+
+            <h1>Create Product</h1>
+
+
+        </div>
+
+        <div class="row ">
+
+            <div class="col-lg-7 mx-auto">
+                <div class="card shadow mx-auto p-4 bg-light">
+                    <div class="card-body  bg-light">
+
+                        <div class="container">
+                            <form id="contact-form" role="form">
+
+                                <div class="controls">
+                                    <div class="container" id="alertid" style="visibility: hidden;">
+                                        <div class="alert  alert-dismissible fade show alert-success">
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close">&times;</button>
+                                            <strong>Product Created..!</strong>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4"></div>
+                                        <div class="col-md-4 h-25">
+                                            <div class="form-group">
+                                                <label for="formFileLg" class="form-label">Upload product image</label>
+                                                <input class="form-control form-control-lg" id="formFileLg" type="file">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4"></div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="form_title">Title </label>
+                                                <input id="form_title" type="text" name="name" class="form-control mt-1"
+                                                    placeholder="Please enter Title" required="required"
+                                                    data-error="Firstname is required.">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="form_category">Select Category</label>
+                                                <select id="form_category" name="need" class="form-control mt-1"
+                                                    required="required" data-error="Please specify your Category.">
+                                                    <option value="" selected>--Select Your Category--</option>
+                                                    <option value="jewelery">jewelery</option>
+                                                    <option value="men's clothing">men's clothing</option>
+                                                    <option value="electronics">electronics</option>
+                                                    <option value="women's clothing">women's clothing</option>
+
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="form_price">Price</label>
+                                                <input id="form_price" type="number" name="price"
+                                                    class="form-control mt-1" placeholder="Please enter Price"
+                                                    required="required" data-error="Valid email is required.">
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="form_desc">Description</label>
+                                                <textarea id="form_desc" name="desc" class="form-control mt-1"
+                                                    placeholder="Write Product Description here." rows="4"
+                                                    required="required"
+                                                    data-error="Please, leave us a message."></textarea>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-md-12 mt-4 text-center">
+
+                                            <input type="" id="createbtn"
+                                                class="btn btn-primary btn-send  pt-2 btn-block" value="Create">
+
+                                        </div>
+
+
+
+                                    </div>
+
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- /.8 -->
+
+            </div>
+            <!-- /.row-->
+
+        </div>
+    </div>
+
+    <script>
+
+        document.getElementById("createbtn").addEventListener('click', async () => {
+
+            const product = {
+                title: document.getElementById("form_title").value,
+                price: parseInt(document.getElementById("form_price").value),
+                description: document.getElementById("form_desc").value,
+                category: document.getElementById("form_category").value,
+                image: document.getElementById("formFileLg").value
+
+            }
+            await createProduct("https://fakestoreapi.com/products", product)
+        });
+
+        async function createProduct(url, product) {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(product)
+            });
+
+            try {
+                if (!response.ok) throw new Error("Unable to Create Product");
+                const data = response.json();
+
+                console.log(data);
+                document.getElementById("alertid").style.visibility = "visible";
+            } catch (error) {
+                console.error(error);
+            }
+
+        }
+
+    </script>
+
+</body>
+
+
+</html>
