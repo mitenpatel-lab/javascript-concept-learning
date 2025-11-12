@@ -1,6 +1,8 @@
 
 let todos = [];
 
+
+
 function getAllTodo(req, res) {
 
     if (todos.length == 0) {
@@ -8,7 +10,6 @@ function getAllTodo(req, res) {
     }
 
     return res.status(200).json(todos);
-
 }
 
 function updateTodo(req, res) {
@@ -36,9 +37,6 @@ function updateTodo(req, res) {
 function createTodo(req, res) {
     const { todo } = req.body;
 
-    if (!todo) {
-        return res.status(400).json({ success: false, message: "Todo text is required" });
-    }
     const newTodo = {
         id: todos.length + 1,
         text: todo,
