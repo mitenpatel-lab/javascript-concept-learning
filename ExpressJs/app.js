@@ -5,6 +5,7 @@ const userRoutes = require('./Routers/userRoute');
 const todoRoutes = require('./Routers/todoRoute');
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.use('', userRoutes);
