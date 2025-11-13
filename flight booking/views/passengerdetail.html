@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passenger Details</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0d47a1;
+        }
+
+        .flight-info,
+        .passenger-form {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .flight-info h2,
+        .passenger-form h2 {
+            color: #1565c0;
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #0d47a1;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        .back-btn {
+            display: block;
+            margin: 0 auto;
+            margin-top: 15px;
+            background: #ccc;
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>✈️ Passenger Details</h1>
+
+    <div class="flight-info" id="flightInfo">
+        <h2>Selected Flight</h2>
+        <div id="flightDetails"></div>
+    </div>
+
+    <div class="passenger-form">
+        <h2>Passenger Information</h2>
+        <form id="passengerForm">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" required>
+            </div>
+
+            <button type="submit">Confirm Booking</button>
+        </form>
+
+        <button class="back-btn" onclick="window.history.back()">⬅ Back</button>
+    </div>
+
+    <script>
+        const flight = JSON.parse(localStorage.getItem('selectedFlight'));
+
+        console.log(flight)
+
+        if (!flight) {
+            document.getElementById('flightDetails').innerHTML = `<p>No flight selected.</p>`;
+        } else {
+            document.getElementById('flightDetails').innerHTML = `
+        <div class="info-row"><strong>Airline:</strong> ${flight.airline}</div>
+        <div class="info-row"><strong>Flight No:</strong> ${flight.flightNumber}</div>
+        <div class="info-row"><strong>From:</strong> ${flight.departure.city} (${flight.departure.airportCode})</div>
+        <div class="info-row"><strong>To:</strong> ${flight.arrival.city} (${flight.arrival.airportCode})</div>
+        <div class="info-row"><strong>Date:</strong> ${new Date(flight.departure.scheduledTime).toISOString().split('T')[0]}</div>
+        <div class="info-row"><strong>Price:</strong> ₹${flight.price.max}</div>
+      `;
+        }
+
+        document.getElementById('passengerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const passenger = {
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+            };
+
+            alert(`Booking Confirmed!\n\nFlight: ${flight.flightNumber}\nPassenger: ${passenger.name}`);
+
+            localStorage.removeItem('selectedFlight');
+            window.location.href = '/flightList.html';
+        });
+    </script>
+</body>
+
+</html>

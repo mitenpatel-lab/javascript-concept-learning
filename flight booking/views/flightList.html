@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Finder</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: #0d47a1;
+            margin-bottom: 5px;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .search-bar input,
+        .search-bar button {
+            padding: 10px 15px;
+            border-radius: 25px;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar button {
+            background-color: #0d47a1;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #1565c0;
+        }
+
+        .content {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .filters {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 220px;
+            height: fit-content;
+        }
+
+        .filters h3 {
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 10px;
+        }
+
+        select {
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        select:hover {
+            border-color: #1565c0;
+        }
+
+        table {
+            display: none;
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #1565c0;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .OnTime {
+            background-color: #28a745;
+        }
+
+        .Delayed {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .Cancelled {
+            background-color: #dc3545;
+        }
+
+        .Boarding {
+            background-color: #28a745;
+        }
+
+        .Departed {
+            background-color: #5a3f05;
+        }
+
+        .Landed {
+            background-color: #059297;
+
+        }
+
+        .BookBtn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .BookBtn:hover {
+            background-color: #0056b3;
+        }
+
+        .no-results {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>✈️ Flight Finder</h1>
+        <p>Search and book your next journey</p>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" id="fromInput" placeholder="From (e.g. Delhi)">
+        <input type="text" id="toInput" placeholder="To (e.g. Mumbai)">
+        <input type="date" id="dateInput">
+        <button id="searchBtn">Search Flights</button>
+    </div>
+
+    <div class="content">
+        <div class="filters" id="filters">
+            <h3>Filters</h3>
+            <label>Airline:</label>
+            <select id="airlineFilter">
+                <option value="">All</option>
+                <option value="Air India">Air India</option>
+                <option value="IndiGo">IndiGo</option>
+                <option value="Vistara">Vistara</option>
+                <option value="SpiceJet">SpiceJet</option>
+            </select>
+
+            <label>Status:</label>
+            <select id="statusFilter">
+                <option value="">All</option>
+                <option value="On Time">On Time</option>
+                <option value="Delayed">Delayed</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+
+            <label>Price Range:</label>
+            <select id="priceFilter">
+                <option value="">All</option>
+                <option value="0-5000">0 - 5,000</option>
+                <option value="5000-10000">5,000 - 10,000</option>
+                <option value="10000-20000">10,000 - 20,000</option>
+            </select>
+        </div>
+
+        <table id="flightTable">
+            <thead>
+                <tr>
+                    <th>Airline</th>
+                    <th>Departure Date</th>
+                    <th>Flight No</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                    <th>Status</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="flightBody"></tbody>
+        </table>
+    </div>
+
+    <p class="no-results" id="noResults" style="display:none;">No flights found.</p>
+
+    <footer>© 2025 Flight Finder</footer>
+    <script>
+        const token = localStorage.getItem('token');
+
+
+        let baseFilters = {};
+        document.getElementById('searchBtn').addEventListener('click', async () => {
+            const from = document.getElementById('fromInput').value.trim().toLowerCase();
+            const to = document.getElementById('toInput').value.trim().toLowerCase();
+            const date = document.getElementById('dateInput').value;
+
+            if (!from || !to || !date) {
+                alert('Please enter All Field.');
+                return;
+            }
+
+            baseFilters = { from, to, date };
+            await fetchFlights(baseFilters);
+        });
+
+        async function fetchFlights(filters = {}) {
+            const queryParams = new URLSearchParams(filters).toString();
+            console.log(queryParams);
+            const API = `/api/flights?${queryParams}`;
+            const res = await fetch(API, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (res.status === 401) {
+                localStorage.removeItem('token');
+                window.location.href = '/index.html';
+                return;
+            }
+
+            const flights = await res.json();
+            renderFlights(flights, res.status);
+        }
+        function renderFlights(flights, status) {
+            const table = document.getElementById('flightTable');
+            const tbody = document.getElementById('flightBody');
+            const filtersDiv = document.getElementById('filters');
+            const noResults = document.getElementById('noResults');
+
+            tbody.innerHTML = '';
+
+            if (!Array.isArray(flights) || flights.length <= 0 || status != 200) {
+                table.style.display = 'none';
+                filtersDiv.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            noResults.style.display = 'none';
+            table.style.display = 'table';
+            filtersDiv.style.display = 'flex';
+
+            flights.forEach(f => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+        <td>${f.airline}</td>
+                <td>${new Date(f.departure.scheduledTime).toISOString().split('T')[0]}</td>
+        <td>${f.flightNumber}</td>
+        <td>${f.departure.city} (${f.departure.airportCode})</td>
+        <td>${f.arrival.city} (${f.arrival.airportCode})</td>
+        <td>${new Date(f.departure.scheduledTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+        <td>${new Date(f.arrival.scheduledTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+        <td><span class="status ${f.status.replace(/\s/g, '')}">${f.status}</span></td>
+        <td>₹${f.price.max}</td>
+        <td><button class="BookBtn" data-flight='${f.flightNumber}'>Book Now</button></td>`;
+
+                const btn = row.querySelector('.BookBtn');
+                btn.addEventListener('click', () => {
+                    localStorage.setItem('selectedFlight', JSON.stringify(f));
+                    window.location.href = `/passengerdetail.html`;
+                });
+                tbody.appendChild(row);
+
+
+            });
+
+
+
+
+        }
+
+        document.getElementById("airlineFilter").addEventListener("change", () => applyFilters());
+        document.getElementById("statusFilter").addEventListener("change", () => applyFilters());
+        document.getElementById("priceFilter").addEventListener("change", () => applyFilters());
+
+
+        async function applyFilters() {
+            if (!baseFilters.from || !baseFilters.to) return;
+
+            const airline = document.getElementById("airlineFilter").value;
+            const status = document.getElementById("statusFilter").value;
+            const priceRange = document.getElementById("priceFilter").value;
+
+            const [minPrice, maxPrice] = priceRange
+                ? priceRange.split("-").map(Number)
+                : [null, null];
+
+            const fullFilters = {
+                ...baseFilters,
+                airline,
+                status,
+                ...(minPrice !== null ? { minPrice } : {}),
+                ...(maxPrice !== null ? { maxPrice } : {}),
+            };
+
+
+            await fetchFlights(fullFilters);
+
+        }
+    </script>
+
+</body>
+
+</html>
