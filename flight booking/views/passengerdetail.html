@@ -118,12 +118,19 @@
 
     <script>
         const flight = JSON.parse(localStorage.getItem('selectedFlight'));
+        function generateFiveDigitNumber() {
+            const min = 10000;
+            const max = 99999;
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
 
         console.log(flight)
 
         if (!flight) {
             document.getElementById('flightDetails').innerHTML = `<p>No flight selected.</p>`;
         } else {
+
+            const ticketNumber = "FBN" + generateFiveDigitNumber();
             document.getElementById('flightDetails').innerHTML = `
         <div class="info-row"><strong>Airline:</strong> ${flight.airline}</div>
         <div class="info-row"><strong>Flight No:</strong> ${flight.flightNumber}</div>
@@ -146,7 +153,25 @@
             alert(`Booking Confirmed!\n\nFlight: ${flight.flightNumber}\nPassenger: ${passenger.name}`);
 
             localStorage.removeItem('selectedFlight');
-            window.location.href = '/flightList.html';
+
+            // async function generateTicket() {
+            //     const API = `/api/flights/pdf`;
+            //     const res = await fetch(API, {
+            //         headers: { Authorization: `Bearer ${token}` },
+            //         body: innerHTML
+            //     });
+
+            //     if (res.status === 401) {
+            //         localStorage.removeItem('token');
+            //         window.location.href = '/index.html';
+            //         return;
+            //     }
+
+            //     const flights = await res.json();
+            //     renderFlights(flights, res.status);
+            // }
+
+            // window.location.href = '/succe.html';
         });
     </script>
 </body>

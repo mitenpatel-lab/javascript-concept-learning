@@ -179,6 +179,48 @@
             margin-top: 30px;
             color: #555;
         }
+
+        header {
+            position: relative;
+        }
+
+        .top-right-buttons {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .profile-btn {
+            background: #0d47a1;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .profile-btn:hover {
+            background: #1565c0;
+        }
+
+        .logout-btn {
+            background: #d32f2f;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #b71c1c;
+        }
     </style>
 </head>
 
@@ -186,6 +228,11 @@
     <header>
         <h1>✈️ Flight Finder</h1>
         <p>Search and book your next journey</p>
+        <div class="top-right-buttons">
+            <div class="profile-btn" onclick="window.location.href='profile.html'">Profile</div>
+            <div class="logout-btn" onclick="logout()">Logout</div>
+        </div>
+
     </header>
 
     <div class="search-bar">
@@ -247,6 +294,12 @@
 
     <footer>© 2025 Flight Finder</footer>
     <script>
+
+        function logout() {
+
+            localStorage.removeItem('token');
+            window.location.href = '/index.html';
+        }
         const token = localStorage.getItem('token');
 
 

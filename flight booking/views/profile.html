@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .profile-container {
+            background: #fff;
+            width: 380px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #bbb;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background-color: #0d47a1;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #1565c0;
+        }
+
+        .back-btn {
+            text-align: center;
+            margin-top: 15px;
+            cursor: pointer;
+            color: #0d47a1;
+            font-weight: 600;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+        <h2>User Profile</h2>
+
+        <label>Username</label>
+        <input type="text" id="username" placeholder="Enter username" disabled />
+
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Enter new password" />
+
+        <button id="updateBtn">Update</button>
+
+        <div class="back-btn" onclick="window.location.href='flightfinder.html'">
+            ← Back to Flights
+        </div>
+        <p id="response" class="fw-semibold mt-3"></p>
+
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = "/index.html";
+        }
+        document.getElementById("username").value = localStorage.getItem("username");
+        let output = document.getElementById("response");
+
+        const username = localStorage.getItem("username")
+        document.getElementById("updateBtn").addEventListener("click", async () => {
+            const password = document.getElementById("password").value.trim();
+
+            if (!password) {
+                output.innerText = '❌ Enter Password';
+                output.style.color = 'red';
+                output.style.textAlign = 'center'
+                return;
+            }
+            if (password.length < 8 || password.length > 15) {
+                output.innerText = '❌ Password must be between 8-15';
+                output.style.color = 'red';
+                output.style.textAlign = 'center'
+
+                return;
+            }
+
+            try {
+                const res = await fetch("api/update", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+
+                if (res.status === 401) {
+                    localStorage.removeItem('token');
+                    window.location.href = '/index.html';
+                    return;
+                }
+
+                const data = await res.json();
+                output.innerText = data.message;;
+                output.style.color = 'green';
+                output.style.textAlign = 'center'
+
+                return;
+
+            } catch (err) {
+
+                output.innerText = '❌ Error updating profile';
+                output.style.textAlign = 'center'
+
+                output.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+
+</html>

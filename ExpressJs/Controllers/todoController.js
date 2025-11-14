@@ -57,8 +57,6 @@ function deleteTodo(req, res) {
     const id = parseInt(req.params.id);
     const findTodo = todos.filter((todo => todo.id === id));
 
-    // console.log(findTodo);
-
     if (findTodo.length == 0) {
         return res.status(400).json({ success: false, message: "no todo with that id" })
     }
